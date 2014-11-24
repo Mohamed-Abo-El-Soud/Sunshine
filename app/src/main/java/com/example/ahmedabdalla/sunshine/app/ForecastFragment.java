@@ -1,39 +1,32 @@
 package com.example.ahmedabdalla.sunshine.app;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.Date;
 
+import com.example.ahmedabdalla.sunshine.app.ForecastRecyclerViewAdapter.OnItemClickListener;
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract;
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract.WeatherEntry;
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract.LocationEntry;
-import com.example.ahmedabdalla.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
  * Created by ahmedabdalla on 2014-11-05.
@@ -41,8 +34,10 @@ import com.example.ahmedabdalla.sunshine.app.sync.SunshineSyncAdapter;
 public class ForecastFragment extends Fragment implements
         LoaderManager.LoaderCallbacks <Cursor>{
 
+    // stuff for listview...
     private ForecastAdapter mForecastAdapter;
-
+    private ListView mListview;
+    private boolean mUseTodayLayout = true;
 
     protected final String Log_TAG = ForecastFragment.class.getSimpleName();
 
@@ -55,9 +50,10 @@ public class ForecastFragment extends Fragment implements
 
     private String mLocation;
 
-    private boolean mUseTodayLayout = true;
-
-    private ListView mListview;
+    // stuff for Recyclerview...
+    private ForecastRecyclerViewAdapter mRecyclerAdapter;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mlayoutManager;
 
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
@@ -196,7 +192,9 @@ public class ForecastFragment extends Fragment implements
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        createListView(rootView);
+//        createListView(rootView);
+
+        createRecycleView(rootView);
 
         /**
             mForecastAdapter = new ForecastAdapter(getActivity(),null,0);
@@ -235,8 +233,8 @@ public class ForecastFragment extends Fragment implements
 
         mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
-        mListview = (ListView) rootView.findViewById(
-                R.id.listview_forecast);
+//        mListview = (ListView) rootView.findViewById(
+//                R.id.listview_forecast);
 
         mListview.setAdapter(mForecastAdapter);
 
@@ -255,6 +253,32 @@ public class ForecastFragment extends Fragment implements
     }
 
     private void createRecycleView(View rootView){
+
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylerview_forecast);
+        mRecyclerAdapter = new ForecastRecyclerViewAdapter(getActivity(),null);
+        mlayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(mlayoutManager);
+
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+//        mRecyclerView.setHasFixedSize(true);
+
+        mRecyclerAdapter.SetOnItemClickListener(new ForecastRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(true) return;
+//                Log.v(Log_TAG, position + "");
+
+                Cursor cursor = mRecyclerAdapter.getCursor();
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
+                }
+                mPostiion = position;
+            }
+        });
 
     }
 
@@ -292,18 +316,27 @@ public class ForecastFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader
             , Cursor cursor) {
-        mForecastAdapter.swapCursor(cursor);
-        mListview.setSelection(mPostiion);
+        if(mForecastAdapter != null){
+            mForecastAdapter.swapCursor(cursor);
+            mListview.setSelection(mPostiion);
+        }
+        if(mRecyclerAdapter != null)
+            mRecyclerAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mForecastAdapter.swapCursor(null);
+        if(mForecastAdapter != null)
+            mForecastAdapter.swapCursor(null);
+        if(mRecyclerAdapter != null)
+            mRecyclerAdapter.swapCursor(null);
     }
 
     public void setUseTodayLayout (boolean useTodayLayout){
         mUseTodayLayout = useTodayLayout;
         if(mForecastAdapter != null)
             mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        if(mRecyclerAdapter != null)
+            mRecyclerAdapter.setUseTodayLayout(mUseTodayLayout);
     }
 }
