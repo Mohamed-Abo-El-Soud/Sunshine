@@ -196,6 +196,40 @@ public class ForecastFragment extends Fragment implements
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        createListView(rootView);
+
+        /**
+            mForecastAdapter = new ForecastAdapter(getActivity(),null,0);
+
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+
+            mListview = (ListView) rootView.findViewById(
+                    R.id.listview_forecast);
+
+            mListview.setAdapter(mForecastAdapter);
+
+
+
+            mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Cursor cursor = mForecastAdapter.getCursor();
+                    if (cursor != null && cursor.moveToPosition(position)) {
+                        mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
+                    }
+                    mPostiion = position;
+                }
+            });
+        **/
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY))
+            mPostiion = savedInstanceState.getInt(POSITION_KEY);
+
+
+        return rootView;
+    }
+
+    private void createListView(View rootView){
 
         mForecastAdapter = new ForecastAdapter(getActivity(),null,0);
 
@@ -218,12 +252,10 @@ public class ForecastFragment extends Fragment implements
                 mPostiion = position;
             }
         });
+    }
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY))
-            mPostiion = savedInstanceState.getInt(POSITION_KEY);
+    private void createRecycleView(View rootView){
 
-
-        return rootView;
     }
 
     @Override
