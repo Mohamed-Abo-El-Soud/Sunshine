@@ -1,0 +1,32 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity$PlaceholderFragment"
+    >
+<!--
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"-->
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:id="@+id/listview_forecast"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        style="@style/ForecastListStyle"
+        />
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:scrollbars="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:layout="@android:layout/list_content"-->
+        <!--android:id="@+id/recylerview_forecast"-->
+        <!--/>-->
+
+</FrameLayout>

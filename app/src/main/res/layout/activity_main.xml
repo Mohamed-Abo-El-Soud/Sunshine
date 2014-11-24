@@ -1,0 +1,43 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<include layout="@layout/toolbar"/>
+
+    <!--<include layout="@layout/card_view"/>-->
+    <!--<android.support.v7.widget.CardView-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:background="@color/grey"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_margin="40dp"-->
+        <!--app:cardCornerRadius="4dp"-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android">-->
+        <!--&lt;!&ndash; Your card content &ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="HELLO!!!"-->
+            <!--android:textSize="50dp"-->
+            <!--android:textColor="@color/cardview_dark_background"-->
+            <!--android:id="@+id/textView"-->
+            <!--android:layout_gravity="center_horizontal" />-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_forecast"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:name="com.example.ahmedabdalla.sunshine.app.ForecastFragment"
+        tools:context=".ForecastFragment"
+        tools:layout="@android:layout/list_content"
+        tools:ignore="MergeRootFrame"
+        />
+</LinearLayout>
