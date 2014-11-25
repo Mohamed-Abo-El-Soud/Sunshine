@@ -1,17 +1,23 @@
 package com.example.ahmedabdalla.sunshine.app;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 //import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract;
@@ -42,19 +49,9 @@ implements ForecastFragment.Callback
     public boolean mTwoPane = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        supportRequestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
-
-
-        //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        //set the transition
-        //Transition ts = new Explode();
-        //ts.setStartDelay(2000);
-        //set the duration
-        //ts.setDuration(5000);
-        //getWindow().setEnterTransition(ts);
-        //set an exit transition so it is activated when the current activity exits
-        //getWindow().setExitTransition(ts);
-
         setContentView(R.layout.activity_main);
         android.support.v7.widget.Toolbar toolbar =
                 (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar_main);
@@ -131,7 +128,8 @@ implements ForecastFragment.Callback
 //    }
 
     @Override
-    public void onItemSelected(String date) {
+    public void onItemSelected(String date,View view)
+    {
         if (mTwoPane) {
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
             Fragment tempFragment = manager
@@ -154,15 +152,21 @@ implements ForecastFragment.Callback
         else {
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra(DetailFragment.DATE_STRING,date);
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-            //startActivity(intent);
-//            android.support.v4.app.ActivityOptionsCompat options;
-//            options = android.support.v4.app.ActivityOptionsCompat
-//                            .makeSceneTransitionAnimation(this,new View(this),"cow");
-//                            //(
-//                    //this, transitionView, DetailActivity.EXTRA_IMAGE);
-//            android.support.v4.app.ActivityCompat.startActivity(this, intent,
-//                    options.toBundle());
+//            startActivity(intent);
+            //set the transition
+            Transition ts = new Explode();
+            ts.setStartDelay(0);//2000);
+            //set the duration
+            ts.setDuration(500);//5000);
+//            ts.addTarget(getString(R.string.icon_transition_name));
+//            ts.addTarget(R.i)
+//            ts.addTarget(getString(R.string.icon_transition_name));
+            getWindow().setEnterTransition(ts);
+            //set an exit transition so it is activated when the current activity exits
+            getWindow().setExitTransition(ts);
+            startActivity(intent,ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this).toBundle());
+
         }
     }
 

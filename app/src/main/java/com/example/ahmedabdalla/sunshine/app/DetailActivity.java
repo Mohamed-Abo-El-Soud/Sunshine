@@ -15,6 +15,8 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.util.Log;
@@ -40,6 +42,17 @@ public class DetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         //doTransition();
+
+        //set the transition
+        Transition ts = new Explode();
+//        ts.addTarget(getString(R.string.icon_transition_name));
+        ts.setStartDelay(0);//2000);
+        //set the duration
+        ts.setDuration(500);//5000);
+        getWindow().setEnterTransition(ts);
+        //set an exit transition so it is activated when the current activity exits
+        getWindow().setExitTransition(ts);
+
         setContentView(R.layout.activity_detail);
         android.support.v7.widget.Toolbar toolbar =
                 (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar_main);

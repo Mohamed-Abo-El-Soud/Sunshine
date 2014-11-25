@@ -1,9 +1,7 @@
 package com.example.ahmedabdalla.sunshine.app;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +42,11 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // Determine layoutId from viewType
+        int layoutId = viewType == VIEW_TYPE_TODAY? R.layout.list_item_forecast_today:R.layout.list_item_forecast;
         final LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        final View mView = layoutInflater.inflate(
-                R.layout.list_item_forecast,viewGroup,false);
+        final View mView = layoutInflater.inflate(layoutId,viewGroup,false);
         return new ViewHolder(mView);
     }
 

@@ -1,6 +1,7 @@
 package com.example.ahmedabdalla.sunshine.app;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,11 +15,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.Date;
@@ -99,7 +102,7 @@ public class ForecastFragment extends Fragment implements
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String date);
+        public void onItemSelected(String date,View view);
     }
 
     Callback mListener;
@@ -117,7 +120,8 @@ public class ForecastFragment extends Fragment implements
         try {
             mListener = (Callback) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnArticleSelectedListener");
+            throw new ClassCastException(activity.toString() +
+                    " must implement OnArticleSelectedListener");
         }
     }
 
@@ -180,7 +184,8 @@ public class ForecastFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))){
+        if (mLocation != null && !mLocation.equals(
+                Utility.getPreferredLocation(getActivity()))){
             getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
         }
 
@@ -245,7 +250,7 @@ public class ForecastFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = mForecastAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
+//                    mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
                 }
                 mPostiion = position;
             }
@@ -264,17 +269,15 @@ public class ForecastFragment extends Fragment implements
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
 
-        mRecyclerAdapter.SetOnItemClickListener(new ForecastRecyclerViewAdapter.OnItemClickListener() {
+        mRecyclerAdapter.SetOnItemClickListener(new ForecastRecyclerViewAdapter
+                .OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if(true) return;
-//                Log.v(Log_TAG, position + "");
-
                 Cursor cursor = mRecyclerAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
+                    mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE),view);
                 }
                 mPostiion = position;
             }

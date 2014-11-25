@@ -30,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="June 24"
+            android:transitionName="@string/icon_transition_name"
             android:textSize="16sp"
             android:textColor="@color/light_grey"
             android:fontFamily="sans-serif-condensed"
@@ -89,9 +90,9 @@
                     android:layout_gravity="center"
                     android:src="@drawable/art_clear"
                     android:contentDescription="@string/weather_ic_description"
+                    android:transitionName="@string/icon_transition_name"
                     />
 
-                <!---->
                 <TextView
                     android:id="@+id/detail_forecast_textview"
                     android:layout_width="wrap_content"

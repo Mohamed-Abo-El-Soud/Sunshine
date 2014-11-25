@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--<android.support.v7.widget.CardView-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--app:cardBackgroundColor="@color/material_deep_teal_200"-->
+    <!--android:layout_width="340dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_gravity="right"-->
+    <!--app:cardCornerRadius="10dp"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android">-->
+
 <LinearLayout
 android:orientation="horizontal"
 android:layout_width="fill_parent"
@@ -17,6 +28,7 @@ xmlns:android="http://schemas.android.com/apk/res/android">
     android:id="@+id/list_item_icon"
     android:src="@drawable/ic_clear"
     android:contentDescription="@string/weather_ic_description"
+    android:transitionName="@string/icon_transition_name"
     />
 
 
@@ -33,6 +45,7 @@ xmlns:android="http://schemas.android.com/apk/res/android">
         android:layout_height="wrap_content"
         android:text="Tomorrow"
         android:textAppearance="?android:textAppearanceLarge"
+        android:contentDescription="@string/weather_ic_description"
         android:fontFamily="sans-serif-condensed"
         android:textIsSelectable="false"
         android:id="@+id/list_item_date_textview" />
@@ -73,3 +86,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 </LinearLayout>
 
 </LinearLayout>
+
+<!--</android.support.v7.widget.CardView>-->
+<!--<include layout="@layout/card_view"/>-->
