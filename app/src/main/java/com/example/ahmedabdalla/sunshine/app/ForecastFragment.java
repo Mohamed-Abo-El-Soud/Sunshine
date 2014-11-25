@@ -1,7 +1,6 @@
 package com.example.ahmedabdalla.sunshine.app;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,18 +14,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.Date;
 
-import com.example.ahmedabdalla.sunshine.app.ForecastRecyclerViewAdapter.OnItemClickListener;
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract;
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract.WeatherEntry;
 import com.example.ahmedabdalla.sunshine.app.data.WeatherContract.LocationEntry;
@@ -49,7 +45,7 @@ public class ForecastFragment extends Fragment implements
     // key for getting the position from the instance state
     private static final String POSITION_KEY = ".position";
     // the position of a selected item
-    private static int mPostiion = -1;
+    private static int mPosition = -1;
 
     private String mLocation;
 
@@ -109,8 +105,8 @@ public class ForecastFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (mPostiion == ListView.INVALID_POSITION)
-            outState.putInt(POSITION_KEY, mPostiion);
+        if (mPosition == ListView.INVALID_POSITION)
+            outState.putInt(POSITION_KEY, mPosition);
         super.onSaveInstanceState(outState);
     }
 
@@ -220,13 +216,13 @@ public class ForecastFragment extends Fragment implements
                     if (cursor != null && cursor.moveToPosition(position)) {
                         mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
                     }
-                    mPostiion = position;
+                    mPosition = position;
                 }
             });
         **/
 
         if(savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY))
-            mPostiion = savedInstanceState.getInt(POSITION_KEY);
+            mPosition = savedInstanceState.getInt(POSITION_KEY);
 
 
         return rootView;
@@ -252,7 +248,7 @@ public class ForecastFragment extends Fragment implements
                 if (cursor != null && cursor.moveToPosition(position)) {
 //                    mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE));
                 }
-                mPostiion = position;
+                mPosition = position;
             }
         });
     }
@@ -279,7 +275,7 @@ public class ForecastFragment extends Fragment implements
                 if (cursor != null && cursor.moveToPosition(position)) {
                     mListener.onItemSelected(cursor.getString(COL_WEATHER_DATE),view);
                 }
-                mPostiion = position;
+                mPosition = position;
             }
         });
 
@@ -321,18 +317,27 @@ public class ForecastFragment extends Fragment implements
             , Cursor cursor) {
         if(mForecastAdapter != null){
             mForecastAdapter.swapCursor(cursor);
-            mListview.setSelection(mPostiion);
+            mListview.setSelection(mPosition);
         }
-        if(mRecyclerAdapter != null)
+        if(mRecyclerAdapter != null) {
             mRecyclerAdapter.swapCursor(cursor);
+            mRecyclerAdapter.notifyDataSetChanged();
+            if (mPosition != RecyclerView.NO_POSITION) {
+                // If we don't need to restart the loader, and there's a desired position to restore
+                // to, do so now.
+                mRecyclerView.smoothScrollToPosition(mPosition);
+            }
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         if(mForecastAdapter != null)
             mForecastAdapter.swapCursor(null);
-        if(mRecyclerAdapter != null)
+        if(mRecyclerAdapter != null) {
             mRecyclerAdapter.swapCursor(null);
+//            mRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     public void setUseTodayLayout (boolean useTodayLayout){

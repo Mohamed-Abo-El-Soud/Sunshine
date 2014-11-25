@@ -54,16 +54,16 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
         // error checking...
-        if (mCursor == null || mContext == null) return;
+//        if(true) return;
+        if (mCursor
+                == null || mContext == null) return;
         if (!mCursor.moveToPosition(position)) return;
-
-        int pos = mCursor.getPosition();
 
         // Read weather icon ID from cursor
         int weatherId = mCursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
 
         // get the view type from the position of the cursor
-        int viewType = getItemViewType(pos);
+        int viewType = getItemViewType(position);
         // Determine image to get from viewType
         if(viewType != VIEW_TYPE_TODAY)
             viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(weatherId));
@@ -74,7 +74,7 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter
         // Read date from cursor
         String dateString = mCursor.getString(ForecastFragment.COL_WEATHER_DATE);
         // Find TextView and set formatted date on it
-        viewHolder.dateView.setText((pos == 0 && !mUseTodayLayout) ?
+        viewHolder.dateView.setText((position == 0 && !mUseTodayLayout) ?
                 Utility.getDayName(mContext, dateString)
                 : Utility.getFriendlyDayString(mContext, dateString));
 
